@@ -1,0 +1,54 @@
+name: Package
+
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+    type: [rebuild]
+
+jobs:
+  build_order:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v3
+      - name: Get build order
+        run: |
+          echo "build_order=$(./get_depends.py)" >> $GITHUB_OUTPUT
+
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.build_order.outputs.build_order) }}
+    steps:
+      - uses: actions/checkout@v3
+        name: Prepare pacman
+        run: |
+          mkdir -p /usr/local/nxdk
+          sed -i 's/OPTIONS=(strip/OPTIONS=(!strip/' /etc/makepkg.conf
+          cat <<EOF > /etc/pacman.conf
+          [options]
+          RootDir     = /usr/local/nxdk
+          DBPath      = /usr/local/nxdk/var/lib/pacman/
+          CacheDir    = /usr/local/nxdk/var/cache/pacman/pkg/
+          LogFile     = /usr/local/nxdk/var/log/pacman.log
+          GPGDir      = /usr/local/nxdk/etc/pacman.d/gnupg/
+          HookDir     = /usr/local/nxdk/etc/pacman.d/hooks/
+          Architecture = x86
+          LocalFileSigLevel = Optional
+          EOF
+      - name: Build package
+        run: |
+          for f in ${{ matrix.package }}; do
+          chown -R nobody:nobody $f
+          cd $f
+          sudo -u nobody makepkg --cleanbuild --ignorearch --noconfirm
+          pacman -U --noconfirm *.pkg.tar.gz --overwrite '*'
+          cd ..
+          done
+      - uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: ${{ env.PACKAGE }}/*.pkg.tar.gz
