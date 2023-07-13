@@ -44,11 +44,11 @@ jobs:
           for f in ${{ matrix.package }}; do
           chown -R nobody:nobody $f
           cd $f
-          sudo -u nobody makepkg --cleanbuild --ignorearch --noconfirm
+          sudo -u nobody makepkg -p NXBUILD --cleanbuild --ignorearch --noconfirm
           pacman -U --noconfirm *.pkg.tar.gz --overwrite '*'
           cd ..
           done
       - uses: actions/upload-artifact@v3
         with:
-          name: package
+          name: packages
           path: ${{ env.PACKAGE }}/*.pkg.tar.gz
