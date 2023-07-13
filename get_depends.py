@@ -21,7 +21,12 @@ class Package:
         return build_order
 
 
-def parse_dependencies_string(value: str):
+def parse_dependencies_string(value: str) -> list[str]:
+    """
+    Create a list of dependencies from the values of the different depends variables in the PKGBUILD
+    :param value: String of depends values of PKGBUILD
+    :return: List of dependencies as strings
+    """
     initial_package_names_found = re.findall(r"[\w\t \-]{2,}", value)
     return_value = []
     for package in initial_package_names_found:
