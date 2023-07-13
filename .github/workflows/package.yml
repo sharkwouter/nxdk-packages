@@ -19,6 +19,7 @@ jobs:
       build_order: ${{ steps.set-build-order.outputs.build_order }}
 
   build:
+    needs: [build_order]
     runs-on: ubuntu-latest
     container: archlinux:base-devel
     strategy:
