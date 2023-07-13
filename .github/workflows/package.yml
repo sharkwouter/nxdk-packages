@@ -10,7 +10,7 @@ jobs:
   build_order:
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@v3
+      - uses: actions/checkout@v3
       - name: Get build order
         run: |
           echo "build_order=$(./get_depends.py)" >> $GITHUB_OUTPUT
