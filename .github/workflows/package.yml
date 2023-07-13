@@ -24,7 +24,7 @@ jobs:
         package: ${{ fromJson(needs.build_order.outputs.build_order) }}
     steps:
       - uses: actions/checkout@v3
-        name: Prepare pacman
+      - name: Prepare pacman
         run: |
           mkdir -p /usr/local/nxdk
           sed -i 's/OPTIONS=(strip/OPTIONS=(!strip/' /etc/makepkg.conf
