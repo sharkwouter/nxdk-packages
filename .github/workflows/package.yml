@@ -12,8 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Get build order
+        id: set-build-order
         run: |
           echo "build_order=$(./get_depends.py)" >> $GITHUB_OUTPUT
+    outputs:
+      build_order: ${{ steps.set-build-order.outputs.build_order }}
 
   build:
     runs-on: ubuntu-latest
