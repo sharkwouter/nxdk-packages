@@ -31,6 +31,7 @@ jobs:
       - name: Prepare pacman
         run: |
           mkdir -p /usr/local/nxdk
+          mkdir -p /usr/local/nxdk/var/lib/pacman/
           sed -i 's/OPTIONS=(strip/OPTIONS=(!strip/' /etc/makepkg.conf
           cat <<EOF > /etc/pacman.conf
           [options]
