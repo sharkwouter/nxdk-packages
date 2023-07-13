@@ -13,11 +13,11 @@ class Package:
     dependencies_as_strings: list[str]
     dependencies: list['Package'] = field(default_factory=list)
 
-    def get_build_order(self) -> list[str]:
-        build_order = []
+    def get_build_order(self) -> str:
+        build_order = ""
         for dependency in self.dependencies:
-            build_order += dependency.get_build_order()
-        build_order.append(self.name)
+            build_order += dependency.get_build_order() + " "
+        build_order += f"{self.name}"
         return build_order
 
 
