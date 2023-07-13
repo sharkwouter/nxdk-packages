@@ -79,7 +79,7 @@ def resolve_package_dependencies(current_package: Package, packages: list[Packag
 
 
 def main() -> None:
-    build_script_name = "PKGBUILD"
+    build_script_name = "NXBUILD"
     if len(sys.argv) == 2:
         build_script_name = sys.argv[1]
 
