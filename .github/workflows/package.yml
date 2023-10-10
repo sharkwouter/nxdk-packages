@@ -47,9 +47,9 @@ jobs:
           Architecture = x86
           LocalFileSigLevel = Optional
           EOF
-          eval $(/usr/local/nxdk/bin/activate -s)
       - name: Build package
         run: |
+          eval $(/usr/local/nxdk/bin/activate -s)
           for f in ${{ matrix.package }}; do
           chown -R nobody:nobody $f
           cd $f
