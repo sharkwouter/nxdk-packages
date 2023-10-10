@@ -16,13 +16,14 @@ jobs:
         id: set-build-order
         run: |
           echo "build_order=$(./get_depends.py)" >> $GITHUB_OUTPUT
+          echo "container=$(echo ghcr.io/${{ github.repository }}|tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
     outputs:
       build_order: ${{ steps.set-build-order.outputs.build_order }}
 
   build:
     needs: [build_order]
     runs-on: ubuntu-latest
-    container: archlinux:base-devel
+    container: ${{ needs.build_order.outputs.container }}
     strategy:
       fail-fast: false
       matrix:
@@ -32,7 +33,7 @@ jobs:
       - name: Prepare pacman
         run: |
           mkdir -p /usr/local/nxdk
-          mkdir -p /usr/local/nxdk/var/lib/pacman/
+          mkdir -p /usr/local/nxdk/var/lib/pacman/  /usr/local/nxdk/var/cache/pacman/ /usr/local/nxdk/log /usr/local/nxdk/pacman.d/
           sed -i 's/OPTIONS=(strip/OPTIONS=(!strip/' /etc/makepkg.conf
           cat <<EOF > /etc/pacman.conf
           [options]
