@@ -16,9 +16,10 @@ jobs:
         id: set-build-order
         run: |
           echo "build_order=$(./get_depends.py)" >> $GITHUB_OUTPUT
-          echo "container=$(echo ghcr.io/${{ github.repository }}|tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "container=$(echo ghcr.io/${{ github.repository }}|tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
     outputs:
       build_order: ${{ steps.set-build-order.outputs.build_order }}
+      container:  ${{ steps.set-build-order.outputs.container }}
 
   build:
     needs: [build_order]
