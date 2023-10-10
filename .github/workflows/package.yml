@@ -47,6 +47,7 @@ jobs:
           Architecture = x86
           LocalFileSigLevel = Optional
           EOF
+          eval $(/usr/local/nxdk/bin/activate -s)
       - name: Build package
         run: |
           for f in ${{ matrix.package }}; do
