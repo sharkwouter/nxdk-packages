@@ -33,23 +33,22 @@ jobs:
       - uses: actions/checkout@v3
       - name: Prepare pacman
         run: |
-          mkdir -p /usr/local/nxdk
           mkdir -p /usr/local/nxdk/var/lib/pacman/  /usr/local/nxdk/var/cache/pacman/ /usr/local/nxdk/log /usr/local/nxdk/pacman.d/
           sed -i 's/OPTIONS=(strip/OPTIONS=(!strip/' /etc/makepkg.conf
           cat <<EOF > /etc/pacman.conf
           [options]
-          RootDir     = /usr/local/nxdk
-          DBPath      = /usr/local/nxdk/var/lib/pacman/
-          CacheDir    = /usr/local/nxdk/var/cache/pacman/pkg/
-          LogFile     = /usr/local/nxdk/var/log/pacman.log
-          GPGDir      = /usr/local/nxdk/etc/pacman.d/gnupg/
-          HookDir     = /usr/local/nxdk/etc/pacman.d/hooks/
+          RootDir     = /usr/src/nxdk
+          DBPath      = /usr/src/nxdk/var/lib/pacman/
+          CacheDir    = /usr/src/nxdk/var/cache/pacman/pkg/
+          LogFile     = /usr/src/nxdk/var/log/pacman.log
+          GPGDir      = /usr/src/nxdk/etc/pacman.d/gnupg/
+          HookDir     = /usr/src/nxdk/etc/pacman.d/hooks/
           Architecture = x86
           LocalFileSigLevel = Optional
           EOF
       - name: Build package
         run: |
-          eval $(/usr/local/nxdk/bin/activate -s)
+          eval $(/usr/src/nxdk/bin/activate -s)
           for f in ${{ matrix.package }}; do
           chown -R nobody:nobody $f
           cd $f
