@@ -53,7 +53,7 @@ jobs:
           chown -R nobody:nobody $f
           cd $f
           sudo -u nobody makepkg -p NXBUILD --cleanbuild --ignorearch --noconfirm
-          pacman -U --noconfirm *.pkg.tar.gz --overwrite '*'
+          pacman -U --noconfirm *.pkg.* --overwrite '*'
           cd ..
           done
       - uses: actions/upload-artifact@v3
