@@ -11,7 +11,7 @@ jobs:
   build_order:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Get build order
         id: set-build-order
         run: |
@@ -30,7 +30,7 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.build_order.outputs.build_order) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Prepare pacman
         run: |
           cp .github/workflows/config/pacman.conf /etc/pacman.conf
@@ -46,7 +46,36 @@ jobs:
           pacman -U --noconfirm *.pkg.* --overwrite '*'
           cd ..
           done
-      - uses: actions/upload-artifact@v3
+      - name: Get package name
+        run: |
+          export PACKAGE=`echo ${{ matrix.package }} | awk '{print $NF}'`
+          echo "PACKAGE=$PACKAGE" >> $GITHUB_ENV
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: packages
+          name: package-${{ env.PACKAGE }}
           path: ${{ env.PACKAGE }}/*.pkg.tar.gz
+  
+  create_release:
+    if: contains(github.ref,'refs/heads/main')
+    needs: [build_order, build]
+    runs-on: ubuntu-latest
+    container: ${{ needs.build_order.outputs.container }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
+    - name: Create repo files
+      run: |
+        mkdir packages
+        cp package-*/*.pkg.tar.gz packages/
+        cd packages
+        repo-add nxdk.db.tar.gz *.pkg.tar.gz
+    - name: Create new release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: packages/*
+        overwrite: true
+        file_glob: true
+        tag: ${{ github.ref }}-${{ github.run_id }}
+        release_name: ${{ github.ref }} (${{ github.run_id }})
