@@ -44,10 +44,10 @@ package () {
   make install
   cd ..
 
-  mkdir -m 755 -p "${pkgdir}/samples"
-  install -m 644 "${srcdir}/sample-main.cpp" "${pkgdir}/samples/main.cpp"
-  install -m 644 "${srcdir}/sample-makefile" "${pkgdir}/samples/makefile"
-  install -m 644 "${srcdir}/sample-message.json" "${pkgdir}/samples/message.json"
+  mkdir -m 755 -p "${pkgdir}/samples/jsoncpp"
+  install -m 644 "${srcdir}/sample-main.cpp" "${pkgdir}/samples/jsoncpp/main.cpp"
+  install -m 644 "${srcdir}/sample-makefile" "${pkgdir}/samples/jsoncpp/makefile"
+  install -m 644 "${srcdir}/sample-message.json" "${pkgdir}/samples/jsoncpp/message.json"
 
   mkdir -m 755 -p "${pkgdir}/share/licenses/${pkgname}"
   install -m 644 LICENSE "${pkgdir}/share/licenses/${pkgname}"
