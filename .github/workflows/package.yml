@@ -43,7 +43,7 @@ jobs:
           LogFile     = /usr/src/nxdk/var/log/pacman.log
           GPGDir      = /usr/src/nxdk/etc/pacman.d/gnupg/
           HookDir     = /usr/src/nxdk/etc/pacman.d/hooks/
-          Architecture = x86
+          Architecture = i686
           LocalFileSigLevel = Optional
           EOF
       - name: Build package
