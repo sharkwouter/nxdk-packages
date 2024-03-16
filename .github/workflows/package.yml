@@ -52,7 +52,7 @@ jobs:
           for f in ${{ matrix.package }}; do
           chown -R nobody:nobody $f
           cd $f
-          sudo -u nobody makepkg -p NXBUILD --cleanbuild --ignorearch --noconfirm
+          sudo -u nobody NXDK_DIR=${NXDK_DIR} makepkg -p NXBUILD --cleanbuild --ignorearch --noconfirm
           pacman -U --noconfirm *.pkg.* --overwrite '*'
           cd ..
           done
