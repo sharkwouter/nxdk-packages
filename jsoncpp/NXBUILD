@@ -10,10 +10,12 @@ source=("git+https://github.com/open-source-parsers/jsoncpp#commit=5defb4ed1a429
 sha256sums=('SKIP')
 
 prepare() {
-    cd "$pkgname/pkg-config"
-    sed -i 's#@CMAKE_INSTALL_PREFIX@#${NXDK_DIR}#g' jsoncpp.pc.in
-    sed -i 's#@libdir_for_pc_file@#${prefix}/lib#' jsoncpp.pc.in
-    sed -i 's#@includedir_for_pc_file@#${prefix}/include#' jsoncpp.pc.in
+    cd "$pkgname"
+    sed -i 's#@CMAKE_INSTALL_PREFIX@#${NXDK_DIR}#g' pkg-config/jsoncpp.pc.in
+    sed -i 's#@libdir_for_pc_file@#${prefix}/lib#' pkg-config/jsoncpp.pc.in
+    sed -i 's#@includedir_for_pc_file@#${prefix}/include#' pkg-config/jsoncpp.pc.in
+
+    sed -i 's#JSON_USE_EXCEPTION 1#JSON_USE_EXCEPTION 0#'  include/json/config.h
 }
 
 build() {
