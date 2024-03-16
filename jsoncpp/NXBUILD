@@ -46,7 +46,7 @@ package () {
 
   mkdir -m 755 -p "${pkgdir}/samples/jsoncpp"
   install -m 644 "${srcdir}/sample-main.cpp" "${pkgdir}/samples/jsoncpp/main.cpp"
-  install -m 644 "${srcdir}/sample-makefile" "${pkgdir}/samples/jsoncpp/makefile"
+  install -m 644 "${srcdir}/sample-makefile" "${pkgdir}/samples/jsoncpp/Makefile"
   install -m 644 "${srcdir}/sample-message.json" "${pkgdir}/samples/jsoncpp/message.json"
 
   mkdir -m 755 -p "${pkgdir}/share/licenses/${pkgname}"
