@@ -77,5 +77,5 @@ jobs:
         file: packages/*
         overwrite: true
         file_glob: true
-        tag: ${{ github.ref }}-${{ github.run_id }}
+        tag: ${{ github.ref }}
         release_name: ${{ github.ref }} (${{ github.run_id }})
