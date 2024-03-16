@@ -20,7 +20,10 @@ build() {
   cd $pkgname
   mkdir -p build
   cd build
-  nxdk-cmake -DCMAKE_INSTALL_PREFIX=${pkgdir} -DCMAKE_BUILD_TYPE=Release -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DJSONCPP_WITH_TESTS=OFF -DJSON_USE_EXCEPTION=0 ..
+  nxdk-cmake \
+    -DCMAKE_INSTALL_PREFIX=${pkgdir} -DCMAKE_BUILD_TYPE=Release \
+    -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DJSONCPP_WITH_TESTS=OFF \
+    -DBUILD_SHARED_LIBS=OFF ..
   make
 }
 
