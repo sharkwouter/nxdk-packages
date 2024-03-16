@@ -33,19 +33,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Prepare pacman
         run: |
-          mkdir -p -m 777 /usr/src/nxdk/var/lib/pacman/  /usr/src/nxdk/var/cache/pacman/ /usr/src/nxdk/log /usr/src/nxdk/pacman.d/
-          sed -i 's/OPTIONS=(strip/OPTIONS=(!strip/' /etc/makepkg.conf
-          cat <<EOF > /etc/pacman.conf
-          [options]
-          RootDir     = /usr/src/nxdk
-          DBPath      = /usr/src/nxdk/var/lib/pacman/
-          CacheDir    = /usr/src/nxdk/var/cache/pacman/pkg/
-          LogFile     = /usr/src/nxdk/var/log/pacman.log
-          GPGDir      = /usr/src/nxdk/etc/pacman.d/gnupg/
-          HookDir     = /usr/src/nxdk/etc/pacman.d/hooks/
-          Architecture = i686
-          LocalFileSigLevel = Optional
-          EOF
+          cp .github/workflows/config/pacman.conf /etc/pacman.conf
+          cp .github/workflows/config/makepkg.conf /etc/makepkg.conf
+          mkdir -p /usr/src/nxdk/var/lib/pacman/  /usr/src/nxdk/var/cache/pacman/ /usr/src/nxdk/log /usr/src/nxdk/pacman.d/
       - name: Build package
         run: |
           eval $(/usr/src/nxdk/bin/activate -s)
